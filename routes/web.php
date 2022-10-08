@@ -24,14 +24,8 @@ use Illuminate\Support\Facades\Route;
 
 
 
-// Route
-// 'middleware' => 'guest'
 
-
-
-
-
-
+// Admin Routes
 Route::group(['prefix' => "/admin", 'middleware' => 'auth', 'as' => 'admin.'], function () {
 
     Route::get('/', function () {
@@ -42,8 +36,6 @@ Route::group(['prefix' => "/admin", 'middleware' => 'auth', 'as' => 'admin.'], f
     Route::resource('posts', PostController::class)->except(['show']);
     Route::resource('categories', AdminCategoryController::class)->except(['show']);
 });
-
-
 
 
 
