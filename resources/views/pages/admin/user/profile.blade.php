@@ -1,5 +1,5 @@
 @extends('layouts.admin')
-@section('title', $user->name)
+@section('title', 'My Profile')
 
 
 @section('contents')
@@ -14,7 +14,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <h3 class="card-title">Edit User</h3>
+                                <h3 class="card-title">My Profile</h3>
                             </div>
                             {{-- <div class="col text-right">Permalink: <a href="{{ route('blog.show', $post->slug) }}"
                                     target="_blank">{{ route('blog.show', $post->slug) }}</a></div> --}}

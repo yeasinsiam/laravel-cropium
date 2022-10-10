@@ -1,4 +1,4 @@
-<?php $__env->startSection('title', $user->name); ?>
+<?php $__env->startSection('title', 'My Profile'); ?>
 
 
 <?php $__env->startSection('contents'); ?>
@@ -13,7 +13,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <h3 class="card-title">Edit User</h3>
+                                <h3 class="card-title">My Profile</h3>
                             </div>
                             
                         </div>
@@ -126,4 +126,4 @@ unset($__errorArgs, $__bag); ?>
     </div>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Programs\Laravel\softtechit\laravel-cropium\resources\views/pages/admin/user/edit-user.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Programs\Laravel\softtechit\laravel-cropium\resources\views/pages/admin/user/profile.blade.php ENDPATH**/ ?>

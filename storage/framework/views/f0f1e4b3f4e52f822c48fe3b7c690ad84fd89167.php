@@ -50,6 +50,13 @@ unset($__errorArgs, $__bag); ?>
                                             style="padding: .5rem 1rem">Upload</label>
                                     </span>
                                 </div>
+                                <div class="input-group col-xs-12">
+                                    <img class="edit-image"
+                                        src="<?php echo e(filter_var($post->thumbnail, FILTER_VALIDATE_URL)
+                                            ? $post->thumbnail
+                                            : asset('/storage/post-images/') . '/' . $post->thumbnail); ?>"
+                                        alt="<?php echo e($post->title); ?>">
+                                </div>
                                 <?php $__errorArgs = ['thumbnail'];
 $__bag = $errors->getBag($__errorArgs[1] ?? 'default');
 if ($__bag->has($__errorArgs[0])) :

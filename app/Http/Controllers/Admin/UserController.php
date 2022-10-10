@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -53,6 +54,10 @@ class UserController extends Controller
      */
     public function create()
     {
+
+        if (auth()->user()->role !== 'admin')
+            abort(404);
+
         $activeMenu = ['user', 'create-user'];
 
         return view('pages.admin.user.create', compact("activeMenu"));
@@ -67,12 +72,16 @@ class UserController extends Controller
     public function store(RegisterUserPostRequest $request)
     {
 
+        if (auth()->user()->role !== 'admin')
+            abort(404);
+
         // Add new photo
         $photo_file = $this->storePhotoFile();
 
         User::create(array_merge($request->all(), [
-            'photo' => $photo_file->hashName(),
+            'photo'             => $photo_file->hashName(),
             'email_verified_at' => Carbon::now(),
+            'role'              => 'admin'
         ]));
 
 
@@ -99,9 +108,26 @@ class UserController extends Controller
     public function edit(User $user)
     {
 
+
+        if (auth()->user()->role !== 'admin')
+            abort(404);
+
         $activeMenu = ['user', 'all-users'];
 
         return view('pages.admin.user.edit-user', compact('user', 'activeMenu'));
+    }
+
+    /**
+     * Show the form for editing the current profile.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function profile()
+    {
+        $activeMenu = ['user', 'my-profile'];
+        $user = Auth::user();
+
+        return view('pages.admin.user.profile', compact('user', 'activeMenu'));
     }
 
     /**
@@ -115,11 +141,13 @@ class UserController extends Controller
     {
 
 
+        if (auth()->user()->role !== 'admin')
+            abort(404);
 
         $allRequestedValue = $request->all();
 
 
-        if ($request->photo) {
+        if ($request->hasFile('photo')) {
             // Delete  old photo
             $this->deletePhotoFile($user);
 
@@ -134,6 +162,17 @@ class UserController extends Controller
         return back()->with('success-message', 'User Updated Successfully !');
     }
 
+
+
+
+
+
+
+
+
+
+
+
     /**
      * Remove the specified resource from storage.
      *
@@ -142,6 +181,10 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+
+        if (auth()->user()->role !== 'admin')
+            abort(404);
+
         $this->deletePhotoFile($user);
         $user->delete();
         return back()->with('success-message', 'User removed successfully!');

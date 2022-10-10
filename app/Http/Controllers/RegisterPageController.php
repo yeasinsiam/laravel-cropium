@@ -29,7 +29,7 @@ class RegisterPageController extends Controller
         $user = User::create(array_merge($request->all(), [
             'photo' => $photo_name,
             'email_verified_at' => Carbon::now(),
-            // 'remember_token' => Str::random(10),
+            'role'              => 'subscriber'
         ]));
 
 

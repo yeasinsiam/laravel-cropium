@@ -44,6 +44,13 @@
                                             style="padding: .5rem 1rem">Upload</label>
                                     </span>
                                 </div>
+                                <div class="input-group col-xs-12">
+                                    <img class="edit-image"
+                                        src="{{ filter_var($post->thumbnail, FILTER_VALIDATE_URL)
+                                            ? $post->thumbnail
+                                            : asset('/storage/post-images/') . '/' . $post->thumbnail }}"
+                                        alt="{{ $post->title }}">
+                                </div>
                                 @error('thumbnail')
                                     <div class="alert alert-danger">{{ $message }}</div>
                                 @enderror

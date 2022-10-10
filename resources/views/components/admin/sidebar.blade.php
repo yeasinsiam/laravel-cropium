@@ -35,10 +35,13 @@
                         <a class="nav-link @if (isset($activeMenu) && in_array('all-post', $activeMenu)) active @endif"
                             href="{{ route('admin.posts.index') }}" id="all-post-menu">All Posts</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link @if (isset($activeMenu) && in_array('create-post', $activeMenu)) active @endif"
-                            href="{{ route('admin.posts.create') }}">Add New Post</a>
-                    </li>
+
+                    @if (auth()->user()->role === 'admin')
+                        <li class="nav-item">
+                            <a class="nav-link @if (isset($activeMenu) && in_array('create-post', $activeMenu)) active @endif"
+                                href="{{ route('admin.posts.create') }}">Add New Post</a>
+                        </li>
+                    @endif
                     <li class="nav-item">
                         <a class="nav-link @if (isset($activeMenu) && in_array('categories', $activeMenu)) active @endif" id="category-menu"
                             href="{{ route('admin.categories.index') }}">Category</a>
@@ -58,9 +61,18 @@
                         <a class="nav-link @if (isset($activeMenu) && in_array('all-users', $activeMenu)) active @endif"
                             href="{{ route('admin.users.index') }}" id="all-post-menu">All Users</a>
                     </li>
+
+                    @if (auth()->user()->role === 'admin')
+                        <li class="nav-item">
+                            <a class="nav-link @if (isset($activeMenu) && in_array('create-user', $activeMenu)) active @endif"
+                                href="{{ route('admin.users.create') }}">Add New User</a>
+                        </li>
+                    @endif
+
+
                     <li class="nav-item">
-                        <a class="nav-link @if (isset($activeMenu) && in_array('create-user', $activeMenu)) active @endif"
-                            href="{{ route('admin.users.create') }}">Add New User</a>
+                        <a class="nav-link @if (isset($activeMenu) && in_array('my-profile', $activeMenu)) active @endif"
+                            href="{{ route('admin.user.profile') }}">My Profile</a>
                     </li>
                 </ul>
             </div>

@@ -37,7 +37,10 @@ Route::group(['prefix' => "/admin", 'middleware' => ['auth:sanctum', 'verified']
 
     Route::resource('posts', PostController::class)->except(['show']);
     Route::resource('categories', CategoryController::class)->except(['show']);
+
+    // user
     Route::resource('users', UserController::class)->except(['show']);
+    Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
 });
 
 

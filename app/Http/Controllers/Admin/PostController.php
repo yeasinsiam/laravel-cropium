@@ -50,6 +50,10 @@ class PostController extends Controller
     public function create()
     {
 
+
+        if (auth()->user()->role !== 'admin')
+            abort(404);
+
         $categories = Category::all();
         $activeMenu = ['post', 'create-post'];
         return view('pages.admin.post.create', compact('categories', 'activeMenu'));
@@ -63,6 +67,10 @@ class PostController extends Controller
      */
     public function store(StorePostRequest $request)
     {
+
+
+        if (auth()->user()->role !== 'admin')
+            abort(404);
 
         // dd($request->all());
 
@@ -88,6 +96,11 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+
+
+        if (auth()->user()->role !== 'admin')
+            abort(404);
+
         $categories = Category::all();
 
         $postCategoryIds = $post->categories->map(function ($category) {
@@ -113,13 +126,17 @@ class PostController extends Controller
     {
 
 
+
+        if (auth()->user()->role !== 'admin')
+            abort(404);
+
         $merge_request_vars = [
             'user_id' => auth()->user()->id
         ];
 
 
 
-        if ($request->thumbnail) {
+        if ($request->hasFile('thumbnail')) {
             // Delete  old thumbnail
             $this->deleteThumbnailFile($post);
 
@@ -147,6 +164,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
+
+        if (auth()->user()->role !== 'admin')
+            abort(404);
+
         $post->categories()->sync([]);
         $this->deleteThumbnailFile($post);
         $post->delete();
