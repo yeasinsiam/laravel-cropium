@@ -25,8 +25,7 @@ class RegisterUserPostRequest extends FormRequest
     {
         return [
             'name'      => ['required', 'max:255'],
-            'photo'     => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            // 'username'  => ['required', 'min:5'],
+            'photo'     => 'image|max:2048',
             'email'     => ['required', 'email', 'unique:users'],
             'photo'     => ['required', 'image'],
             'password'  => ['required', 'min:4'],

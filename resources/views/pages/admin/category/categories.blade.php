@@ -104,7 +104,7 @@
                                             <td> {{ $category->slug }} </td>
                                             <td> {{ date('M d, Y', strtotime($category->updated_at)) }} </td>
                                             <td>
-                                                <a href="{{ route('admin.categories.edit', $category->id) }}">
+                                                <a href="{{ route('admin.categories.edit', $category) }}">
                                                     <i class="fa fa-edit" style="font-size:1.4em"></i>
                                                 </a>
                                                 <form action="{{ route('admin.categories.destroy', $category) }}"

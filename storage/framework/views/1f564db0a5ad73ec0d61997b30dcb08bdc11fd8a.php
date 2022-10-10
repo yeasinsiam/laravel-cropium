@@ -118,7 +118,7 @@ unset($__errorArgs, $__bag); ?>
                                             <td> <?php echo e($category->slug); ?> </td>
                                             <td> <?php echo e(date('M d, Y', strtotime($category->updated_at))); ?> </td>
                                             <td>
-                                                <a href="<?php echo e(route('admin.categories.edit', $category->id)); ?>">
+                                                <a href="<?php echo e(route('admin.categories.edit', $category)); ?>">
                                                     <i class="fa fa-edit" style="font-size:1.4em"></i>
                                                 </a>
                                                 <form action="<?php echo e(route('admin.categories.destroy', $category)); ?>"

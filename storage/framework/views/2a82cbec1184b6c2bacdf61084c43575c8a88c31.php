@@ -1,5 +1,4 @@
-<?php $__env->startSection('title', 'All Posts'); ?>
-
+<?php $__env->startSection('title', 'All Users'); ?>
 
 
 <?php $__env->startSection('contents'); ?>
@@ -10,10 +9,10 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
-                                <h3 class="card-title">All Posts</h3>
+                                <h3 class="card-title">All Users</h3>
                             </div>
                             <div class="col">
-                                <form class="ml-auto search-form d-none d-md-block" action="<?php echo e(route('admin.posts.index')); ?>"
+                                <form class="ml-auto search-form d-none d-md-block" action="<?php echo e(route('admin.users.index')); ?>"
                                     method="GET">
                                     <input type="search" class="form-control" name="search" placeholder="Search"
                                         value="<?php echo e($search); ?>">
@@ -30,55 +29,45 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th> Post ID </th>
-                                        <th> Thumbnail </th>
-                                        <th> Title</th>
-                                        <th> Categories </th>
-                                        <th> Author </th>
-                                        <th> Total Views </th>
+                                        <th> User ID </th>
+                                        <th> Photo </th>
+                                        <th> Name</th>
+                                        <th> Email </th>
                                         <th> Created At </th>
                                         <th> Actions </th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php if($posts->count() > 0): ?>
-                                        <?php $__currentLoopData = $posts; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $post): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <?php if($users->count() > 0): ?>
+                                        <?php $__currentLoopData = $users; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $user): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                                             <tr>
                                                 <td><a
-                                                        href="<?php echo e(route('admin.posts.edit', $post)); ?>">#<?php echo e($post->id); ?></a>
+                                                        href="<?php echo e(route('admin.users.edit', $user)); ?>">#<?php echo e($user->id); ?></a>
                                                 </td>
                                                 <td class="py-1">
                                                     <img class="thumb-image"
-                                                        src="<?php echo e(filter_var($post->thumbnail, FILTER_VALIDATE_URL)
-                                                            ? $post->thumbnail
-                                                            : asset('/storage/post-images/') . '/' . $post->thumbnail); ?>"
-                                                        alt="Thumbnail" />
+                                                        src="<?php echo e(filter_var($user->photo, FILTER_VALIDATE_URL)
+                                                            ? $user->photo
+                                                            : asset('/storage/user-photos/') . '/' . $user->photo); ?>"
+                                                        alt="photo" />
                                                 </td>
-                                                <td> <a
-                                                        href="<?php echo e(route('admin.posts.edit', $post)); ?>"><?php echo e($post->title); ?></a>
-                                                </td>
-                                                <td>
-                                                    
 
-                                                    <?php $__currentLoopData = $post->categories; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $category): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
-                                                        <button
-                                                            onclick="window.location.href='<?php echo e(route('admin.categories.edit', $category)); ?>'"
-                                                            type="button" class="btn btn-outline-info d-block"
-                                                            style="font-size: .8rem; margin-bottom: 3px"><?php echo e($category->name); ?></button>
-                                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
-                                                </td>
+
                                                 <td>
-                                                    <?php echo e($post->user->name); ?>
+                                                    <a href="<?php echo e(route('admin.users.edit', $user)); ?>"><?php echo e($user->name); ?></a>
 
                                                 </td>
-                                                <td> <?php echo e($post->views); ?> </td>
-                                                <td> <?php echo e(date('M d, Y', strtotime($post->updated_at))); ?> </td>
                                                 <td>
-                                                    <a href="<?php echo e(route('admin.posts.edit', $post)); ?>">
+                                                    <?php echo e($user->email); ?>
+
+                                                </td>
+                                                <td> <?php echo e($user->created_at->format('M d, Y')); ?> </td>
+                                                <td>
+                                                    <a href="<?php echo e(route('admin.users.edit', $user)); ?>">
                                                         <i class="fa fa-edit" style="font-size:1.4em"></i>
                                                     </a>
-                                                    <form action="<?php echo e(route('admin.posts.destroy', $post)); ?>"
-                                                        onclick="return confirm('Sure delete this post?')"
+                                                    <form action="<?php echo e(route('admin.users.destroy', $user)); ?>"
+                                                        onclick="return confirm('Sure delete this user?')"
                                                         class="d-inline m-0 ml-2" method="POST">
                                                         <?php echo csrf_field(); ?>
                                                         <?php echo method_field('DELETE'); ?>
@@ -91,7 +80,7 @@
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                                     <?php else: ?>
                                         <tr>
-                                            <td><span> <?php echo e($search ? 'No search result found' : 'No Post found'); ?> </span>
+                                            <td><span> <?php echo e($search ? 'No search result found' : 'No user found'); ?> </span>
                                             </td>
                                             <td></td>
                                             <td></td>
@@ -105,7 +94,7 @@
                                 </tbody>
                             </table>
                         </div>
-                        <?php echo e($posts->links('components.admin.pagination')); ?>
+                        <?php echo e($users->links('components.admin.pagination')); ?>
 
                     </div>
                 </div>
@@ -114,4 +103,4 @@
     </div>
 <?php $__env->stopSection(); ?>
 
-<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Programs\Laravel\softtechit\laravel-cropium\resources\views/pages/admin/post/posts.blade.php ENDPATH**/ ?>
+<?php echo $__env->make('layouts.admin', \Illuminate\Support\Arr::except(get_defined_vars(), ['__data', '__path']))->render(); ?><?php /**PATH C:\Programs\Laravel\softtechit\laravel-cropium\resources\views/pages/admin/user/users.blade.php ENDPATH**/ ?>

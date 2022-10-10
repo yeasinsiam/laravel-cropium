@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 
-class LoginController extends Controller
+class LoginPageController extends Controller
 {
     public function index()
     {

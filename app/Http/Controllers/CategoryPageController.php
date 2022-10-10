@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 
-class CategoryController extends Controller
+class CategoryPageController extends Controller
 {
 
     public function show(Category $category)

@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 // use Illuminate\Support\Str;
 
-class RegisterController extends Controller
+class RegisterPageController extends Controller
 {
     public function index()
     {

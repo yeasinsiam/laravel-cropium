@@ -1,14 +1,16 @@
 <?php
 
-use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
+
+use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PostController;
-use App\Http\Controllers\BlogController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\BlogPageController;
+use App\Http\Controllers\CategoryPageController;
+use App\Http\Controllers\HomePageController;
+use App\Http\Controllers\LoginPageController;
+use App\Http\Controllers\RegisterPageController;
+use App\Http\Controllers\UserPageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,7 +28,7 @@ use Illuminate\Support\Facades\Route;
 
 
 // Admin Routes
-Route::group(['prefix' => "/admin", 'middleware' => 'auth', 'as' => 'admin.'], function () {
+Route::group(['prefix' => "/admin", 'middleware' => ['auth:sanctum', 'verified'], 'as' => 'admin.'], function () {
 
     Route::get('/', function () {
         return redirect(null, 301)->route('admin.dashboard.index');
@@ -34,36 +36,37 @@ Route::group(['prefix' => "/admin", 'middleware' => 'auth', 'as' => 'admin.'], f
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
     Route::resource('posts', PostController::class)->except(['show']);
-    Route::resource('categories', AdminCategoryController::class)->except(['show']);
+    Route::resource('categories', CategoryController::class)->except(['show']);
+    Route::resource('users', UserController::class)->except(['show']);
 });
 
 
 
 Route::group(['prefix' => "/"], function () {
     // Home
-    Route::get('/', [HomeController::class, 'index'])->name('home.index');
+    Route::get('/', [HomePageController::class, 'index'])->name('home.index');
 
     // Blog
-    Route::resource('/blog', BlogController::class, [
+    Route::resource('/blog', BlogPageController::class, [
         'only' => ['index', 'show']
     ]);
 
     // Category
-    Route::resource('/categories', CategoryController::class, [
+    Route::resource('/categories', CategoryPageController::class, [
         'only' => ['show']
     ]);
     // User
-    Route::get('/users/{user:slug}', [UserController::class, 'show'])->name('users.show');
+    Route::get('/users/{user:slug}', [UserPageController::class, 'show'])->name('users.show');
 
 
     // Login & Register
     Route::group(['middleware' => 'guest'], function () {
-        Route::get('/register', [RegisterController::class, 'index'])->name('user.register');
-        Route::post('/register', [RegisterController::class, 'register'])->name('user.register');
-        Route::get('/login', [LoginController::class, 'index'])->name('user.login');
-        Route::post('/login', [LoginController::class, 'login'])->name('user.login');
+        Route::get('/register', [RegisterPageController::class, 'index'])->name('user.register');
+        Route::post('/register', [RegisterPageController::class, 'register'])->name('user.register');
+        Route::get('/login', [LoginPageController::class, 'index'])->name('user.login');
+        Route::post('/login', [LoginPageController::class, 'login'])->name('user.login');
     });
     Route::group(['middleware' => 'auth'], function () {
-        Route::post('/logout', [LoginController::class, 'logout'])->name('user.logout');
+        Route::post('/logout', [LoginPageController::class, 'logout'])->name('user.logout');
     });
 });

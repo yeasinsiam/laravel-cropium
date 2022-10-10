@@ -6,7 +6,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
-class BlogController extends Controller
+class BlogPageController extends Controller
 {
 
     public function index()

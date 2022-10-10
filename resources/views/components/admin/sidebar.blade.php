@@ -46,6 +46,25 @@
                 </ul>
             </div>
         </li>
+        <li class="nav-item">
+            <a class="nav-link" data-toggle="collapse" href="#ui-users" aria-expanded="false" aria-controls="ui-users">
+                <i class="menu-icon typcn typcn-coffee"></i>
+                <span class="menu-title">User</span>
+                <i class="menu-arrow"></i>
+            </a>
+            <div class="collapse @if (isset($activeMenu) && in_array('user', $activeMenu)) show @endif" id="ui-users">
+                <ul class="nav flex-column sub-menu">
+                    <li class="nav-item">
+                        <a class="nav-link @if (isset($activeMenu) && in_array('all-users', $activeMenu)) active @endif"
+                            href="{{ route('admin.users.index') }}" id="all-post-menu">All Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if (isset($activeMenu) && in_array('create-user', $activeMenu)) active @endif"
+                            href="{{ route('admin.users.create') }}">Add New User</a>
+                    </li>
+                </ul>
+            </div>
+        </li>
 
     </ul>
 </nav>
