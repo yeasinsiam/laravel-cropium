@@ -12,7 +12,7 @@
     <title><?php echo $__env->yieldContent('title'); ?> - <?php echo e(env('APP_NAME')); ?></title>
 
     <!-- Favicon Icon -->
-    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="<?php echo e(asset('favicon.png')); ?>" type="image/x-icon">
 
     <!-- CSS StyleSheet -->
     <link rel="stylesheet" href="<?php echo e(asset('assets/css/animate.css')); ?>">

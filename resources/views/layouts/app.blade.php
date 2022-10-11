@@ -12,7 +12,7 @@
     <title>@yield('title') - {{ env('APP_NAME') }}</title>
 
     <!-- Favicon Icon -->
-    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('favicon.png') }}" type="image/x-icon">
 
     <!-- CSS StyleSheet -->
     <link rel="stylesheet" href="{{ asset('assets/css/animate.css') }}">

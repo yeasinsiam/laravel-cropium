@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\BlogPageController;
 use App\Http\Controllers\CategoryPageController;
+use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\LoginPageController;
 use App\Http\Controllers\RegisterPageController;
@@ -42,6 +43,33 @@ Route::group(['prefix' => "/admin", 'middleware' => ['auth:sanctum', 'verified']
     Route::resource('users', UserController::class)->except(['show']);
     Route::get('/profile', [UserController::class, 'profile'])->name('user.profile');
 });
+
+
+
+
+// Customer Routes
+Route::group(['prefix' => '/customer', 'as' => 'customer.'], function () {
+
+
+
+    Route::group(['middleware' =>  'guest.customer'], function () {
+        Route::get('/register', [CustomerController::class, 'registerPage'])->name('register-page');
+        Route::post('/register', [CustomerController::class, 'register'])->name('register');
+
+        Route::get('/login', [CustomerController::class, 'loginPage'])->name('login-page');
+        Route::post('/login', [CustomerController::class, 'login'])->name('login');
+    });
+
+    Route::group(['middleware' =>  'auth.customer'], function () {
+        Route::get('/', [CustomerController::class, 'index'])->name('index');
+        Route::post('/logout', [CustomerController::class, 'logout'])->name('logout');
+    });
+});
+
+
+
+
+
 
 
 
