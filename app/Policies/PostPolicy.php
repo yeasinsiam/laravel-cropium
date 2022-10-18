@@ -5,10 +5,12 @@ namespace App\Policies;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Auth\Access\Response;
 
 class PostPolicy
 {
     use HandlesAuthorization;
+
 
     /**
      * Determine whether the user can view any models.
@@ -18,7 +20,10 @@ class PostPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return $user->hasAnyRole(['Viewer', 'Editor']) ||
+            $user->hasPermissionTo('View Posts') ?
+            Response::allow() :
+            Response::deny();
     }
 
     /**
@@ -30,7 +35,11 @@ class PostPolicy
      */
     public function view(User $user, Post $post)
     {
-        //
+
+        return $user->hasAnyRole(['Viewer', 'Editor']) ||
+            $user->hasPermissionTo('View Posts') ?
+            Response::allow() :
+            Response::deny();
     }
 
     /**
@@ -41,7 +50,10 @@ class PostPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->hasAnyRole(['Editor']) ||
+            $user->hasPermissionTo('Create And Modify Posts') ?
+            Response::allow() :
+            Response::deny();
     }
 
     /**
@@ -53,7 +65,11 @@ class PostPolicy
      */
     public function update(User $user, Post $post)
     {
-        //
+
+        return $user->hasAnyRole(['Editor']) ||
+            $user->hasPermissionTo('Create And Modify Posts') ?
+            Response::allow() :
+            Response::deny();
     }
 
     /**
@@ -65,7 +81,10 @@ class PostPolicy
      */
     public function delete(User $user, Post $post)
     {
-        //
+        return $user->hasAnyRole(['Editor']) ||
+            $user->hasPermissionTo('Create And Modify Posts') ?
+            Response::allow() :
+            Response::deny();
     }
 
     /**
@@ -77,7 +96,10 @@ class PostPolicy
      */
     public function restore(User $user, Post $post)
     {
-        //
+        return $user->hasAnyRole(['Editor']) ||
+            $user->hasPermissionTo('Create And Modify Posts') ?
+            Response::allow() :
+            Response::deny();
     }
 
     /**
@@ -89,6 +111,9 @@ class PostPolicy
      */
     public function forceDelete(User $user, Post $post)
     {
-        //
+        return $user->hasAnyRole(['Editor']) ||
+            $user->hasPermissionTo('Create And Modify Posts') ?
+            Response::allow() :
+            Response::deny();
     }
 }

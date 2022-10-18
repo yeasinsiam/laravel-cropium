@@ -73,18 +73,25 @@
                                                 <td> {{ $post->views }} </td>
                                                 <td> {{ date('M d, Y', strtotime($post->updated_at)) }} </td>
                                                 <td>
-                                                    <a href="{{ route('admin.posts.edit', $post) }}">
-                                                        <i class="fa fa-edit" style="font-size:1.4em"></i>
-                                                    </a>
-                                                    <form action="{{ route('admin.posts.destroy', $post) }}"
-                                                        onclick="return confirm('Sure delete this post?')"
-                                                        class="d-inline m-0 ml-2" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                            class="bg-transparent border-0 outline-0 m-0 text-danger"><i
-                                                                class="fa fa-trash" style="font-size:1.4em"></i></button>
-                                                    </form>
+
+                                                    @can('update', $post)
+                                                        <a href="{{ route('admin.posts.edit', $post) }}">
+                                                            <i class="fa fa-edit" style="font-size:1.4em"></i>
+                                                        </a>
+                                                    @endcan
+
+
+                                                    @can('update', $post)
+                                                        <form action="{{ route('admin.posts.destroy', $post) }}"
+                                                            onclick="return confirm('Sure delete this post?')"
+                                                            class="d-inline m-0 ml-2" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="bg-transparent border-0 outline-0 m-0 text-danger"><i
+                                                                    class="fa fa-trash" style="font-size:1.4em"></i></button>
+                                                        </form>
+                                                    @endcan
                                                 </td>
                                             </tr>
                                         @endforeach

@@ -62,18 +62,23 @@
                                                 </td>
                                                 <td> {{ $user->created_at->format('M d, Y') }} </td>
                                                 <td>
-                                                    <a href="{{ route('admin.users.edit', $user) }}">
-                                                        <i class="fa fa-edit" style="font-size:1.4em"></i>
-                                                    </a>
-                                                    <form action="{{ route('admin.users.destroy', $user) }}"
-                                                        onclick="return confirm('Sure delete this user?')"
-                                                        class="d-inline m-0 ml-2" method="POST">
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                            class="bg-transparent border-0 outline-0 m-0 text-danger"><i
-                                                                class="fa fa-trash" style="font-size:1.4em"></i></button>
-                                                    </form>
+                                                    @can('update', $user)
+                                                        <a href="{{ route('admin.users.edit', $user) }}">
+                                                            <i class="fa fa-edit" style="font-size:1.4em"></i>
+                                                        </a>
+                                                    @endcan
+                                                    @can('delete', $user)
+                                                        <form action="{{ route('admin.users.destroy', $user) }}"
+                                                            onclick="return confirm('Sure delete this user?')"
+                                                            class="d-inline m-0 ml-2" method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit"
+                                                                class="bg-transparent border-0 outline-0 m-0 text-danger"><i
+                                                                    class="fa fa-trash" style="font-size:1.4em"></i></button>
+                                                        </form>
+                                                    @endcan
+
                                                 </td>
                                             </tr>
                                         @endforeach

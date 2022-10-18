@@ -15,6 +15,15 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(3)->create();
+        $users  =  User::factory(3)->create();
+
+        // Set Role to first users
+        foreach ($users as  $user) {
+            if ($user->id === 1) {
+                $user->assignRole('Admin');
+            } else {
+                $user->assignRole('Editor');
+            }
+        }
     }
 }

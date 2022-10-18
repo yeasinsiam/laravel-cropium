@@ -74,18 +74,25 @@
                                                 <td> <?php echo e($post->views); ?> </td>
                                                 <td> <?php echo e(date('M d, Y', strtotime($post->updated_at))); ?> </td>
                                                 <td>
-                                                    <a href="<?php echo e(route('admin.posts.edit', $post)); ?>">
-                                                        <i class="fa fa-edit" style="font-size:1.4em"></i>
-                                                    </a>
-                                                    <form action="<?php echo e(route('admin.posts.destroy', $post)); ?>"
-                                                        onclick="return confirm('Sure delete this post?')"
-                                                        class="d-inline m-0 ml-2" method="POST">
-                                                        <?php echo csrf_field(); ?>
-                                                        <?php echo method_field('DELETE'); ?>
-                                                        <button type="submit"
-                                                            class="bg-transparent border-0 outline-0 m-0 text-danger"><i
-                                                                class="fa fa-trash" style="font-size:1.4em"></i></button>
-                                                    </form>
+
+                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update', $post)): ?>
+                                                        <a href="<?php echo e(route('admin.posts.edit', $post)); ?>">
+                                                            <i class="fa fa-edit" style="font-size:1.4em"></i>
+                                                        </a>
+                                                    <?php endif; ?>
+
+
+                                                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update', $post)): ?>
+                                                        <form action="<?php echo e(route('admin.posts.destroy', $post)); ?>"
+                                                            onclick="return confirm('Sure delete this post?')"
+                                                            class="d-inline m-0 ml-2" method="POST">
+                                                            <?php echo csrf_field(); ?>
+                                                            <?php echo method_field('DELETE'); ?>
+                                                            <button type="submit"
+                                                                class="bg-transparent border-0 outline-0 m-0 text-danger"><i
+                                                                    class="fa fa-trash" style="font-size:1.4em"></i></button>
+                                                        </form>
+                                                    <?php endif; ?>
                                                 </td>
                                             </tr>
                                         <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

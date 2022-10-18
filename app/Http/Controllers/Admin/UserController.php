@@ -11,9 +11,22 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
+
+
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(User::class, 'user');
+    }
 
     /**
      * Display a listing of the resource.
@@ -55,12 +68,13 @@ class UserController extends Controller
     public function create()
     {
 
-        if (auth()->user()->role !== 'admin')
-            abort(404);
 
         $activeMenu = ['user', 'create-user'];
 
-        return view('pages.admin.user.create', compact("activeMenu"));
+        $roles = Role::all();
+        $permissions = Permission::all();
+
+        return view('pages.admin.user.create', compact("activeMenu", 'roles', 'permissions'));
     }
 
     /**
@@ -72,17 +86,22 @@ class UserController extends Controller
     public function store(RegisterUserPostRequest $request)
     {
 
-        if (auth()->user()->role !== 'admin')
-            abort(404);
 
         // Add new photo
         $photo_file = $this->storePhotoFile();
 
-        User::create(array_merge($request->all(), [
+        $user = User::create(array_merge($request->all(), [
             'photo'             => $photo_file->hashName(),
             'email_verified_at' => Carbon::now(),
-            'role'              => 'admin'
         ]));
+
+
+        // Sync User permissions
+        $user->syncPermissions($request->user_permissions ?? []);
+
+
+        // Sync User Role
+        $user->syncRoles($request->user_role ? [$request->user_role] : []);
 
 
         return back()->with('success-message', 'User Created Successfully !');
@@ -107,14 +126,11 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-
-
-        if (auth()->user()->role !== 'admin')
-            abort(404);
-
         $activeMenu = ['user', 'all-users'];
+        $roles = Role::all();
+        $permissions = Permission::all();
 
-        return view('pages.admin.user.edit-user', compact('user', 'activeMenu'));
+        return view('pages.admin.user.edit-user', compact('user', 'activeMenu', 'roles', 'permissions'));
     }
 
     /**
@@ -141,10 +157,9 @@ class UserController extends Controller
     {
 
 
-        if (auth()->user()->role !== 'admin')
-            abort(404);
-
         $allRequestedValue = $request->all();
+
+        // dd($allRequestedValue);
 
 
         if ($request->hasFile('photo')) {
@@ -154,10 +169,18 @@ class UserController extends Controller
             // Add new photo
             $photo_file = $this->storePhotoFile();
 
-            $allRequestedValue['photo'] = $photo_file->hashName();
+            $$allRequestedValue['photo'] = $photo_file->hashName();
         }
 
         $user->update($allRequestedValue);
+
+        // Sync User permissions
+        $user->syncPermissions($request->user_permissions ?? []);
+
+
+        // Sync User Role
+        $user->syncRoles($request->user_role ? [$request->user_role] : []);
+
 
         return back()->with('success-message', 'User Updated Successfully !');
     }
@@ -182,8 +205,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
 
-        if (auth()->user()->role !== 'admin')
-            abort(404);
 
         $this->deletePhotoFile($user);
         $user->delete();

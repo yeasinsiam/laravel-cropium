@@ -31,21 +31,29 @@
             </a>
             <div class="collapse <?php if(isset($activeMenu) && in_array('post', $activeMenu)): ?> show <?php endif; ?>" id="ui-post">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item">
-                        <a class="nav-link <?php if(isset($activeMenu) && in_array('all-post', $activeMenu)): ?> active <?php endif; ?>"
-                            href="<?php echo e(route('admin.posts.index')); ?>" id="all-post-menu">All Posts</a>
-                    </li>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('viewAny', 'App\\Models\Post')): ?>
+                        <li class="nav-item">
+                            <a class="nav-link <?php if(isset($activeMenu) && in_array('all-post', $activeMenu)): ?> active <?php endif; ?>"
+                                href="<?php echo e(route('admin.posts.index')); ?>" id="all-post-menu">All Posts</a>
+                        </li>
+                    <?php endif; ?>
 
-                    <?php if(auth()->user()->role === 'admin'): ?>
+
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create', 'App\\Models\Post')): ?>
                         <li class="nav-item">
                             <a class="nav-link <?php if(isset($activeMenu) && in_array('create-post', $activeMenu)): ?> active <?php endif; ?>"
                                 href="<?php echo e(route('admin.posts.create')); ?>">Add New Post</a>
                         </li>
                     <?php endif; ?>
-                    <li class="nav-item">
-                        <a class="nav-link <?php if(isset($activeMenu) && in_array('categories', $activeMenu)): ?> active <?php endif; ?>" id="category-menu"
-                            href="<?php echo e(route('admin.categories.index')); ?>">Category</a>
-                    </li>
+
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->any(['View Categories', 'Create And Modify Categories'], 'App\\Models\Category')): ?>
+                        <li class="nav-item">
+                            <a class="nav-link <?php if(isset($activeMenu) && in_array('categories', $activeMenu)): ?> active <?php endif; ?>" id="category-menu"
+                                href="<?php echo e(route('admin.categories.index')); ?>">Category</a>
+                        </li>
+                    <?php endif; ?>
+
+
                 </ul>
             </div>
         </li>
@@ -57,12 +65,15 @@
             </a>
             <div class="collapse <?php if(isset($activeMenu) && in_array('user', $activeMenu)): ?> show <?php endif; ?>" id="ui-users">
                 <ul class="nav flex-column sub-menu">
-                    <li class="nav-item">
-                        <a class="nav-link <?php if(isset($activeMenu) && in_array('all-users', $activeMenu)): ?> active <?php endif; ?>"
-                            href="<?php echo e(route('admin.users.index')); ?>" id="all-post-menu">All Users</a>
-                    </li>
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('viewAny', 'App\\Models\User')): ?>
+                        <li class="nav-item">
+                            <a class="nav-link <?php if(isset($activeMenu) && in_array('all-users', $activeMenu)): ?> active <?php endif; ?>"
+                                href="<?php echo e(route('admin.users.index')); ?>" id="all-post-menu">All Users</a>
+                        </li>
+                    <?php endif; ?>
 
-                    <?php if(auth()->user()->role === 'admin'): ?>
+
+                    <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('create', 'App\\Models\User')): ?>
                         <li class="nav-item">
                             <a class="nav-link <?php if(isset($activeMenu) && in_array('create-user', $activeMenu)): ?> active <?php endif; ?>"
                                 href="<?php echo e(route('admin.users.create')); ?>">Add New User</a>

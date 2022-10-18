@@ -9,6 +9,18 @@ use App\Http\Requests\UpdateCategoryRequest;
 
 class CategoryController extends Controller
 {
+
+
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Category::class, 'category');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -51,8 +63,7 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
 
-        if (auth()->user()->role !== 'admin')
-            abort(404);
+
 
         Category::create($request->all());
         return back()->with('success-message', 'Category created successfully !');
@@ -69,8 +80,7 @@ class CategoryController extends Controller
     public function edit(Category $category)
     {
 
-        if (auth()->user()->role !== 'admin')
-            abort(404);
+
 
         $search = request('search');
         $categories = Category::where('name', 'like', '%' . $search . '%')
@@ -102,8 +112,7 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, Category $category)
     {
 
-        if (auth()->user()->role !== 'admin')
-            abort(404);
+
 
         $category->update($request->all());
         return back()->with('success-message', 'Category updated successfully !');
@@ -119,8 +128,7 @@ class CategoryController extends Controller
     {
 
 
-        if (auth()->user()->role !== 'admin')
-            abort(404);
+
 
         $category->delete();
         return redirect()->back()->with('success-message2', 'Category deleted successfully');

@@ -48,23 +48,23 @@ Route::group(['prefix' => "/admin", 'middleware' => ['auth:sanctum', 'verified']
 
 
 // Customer Routes
-Route::group(['prefix' => '/customer', 'as' => 'customer.'], function () {
+// Route::group(['prefix' => '/customer', 'as' => 'customer.'], function () {
 
 
 
-    Route::group(['middleware' =>  'guest.customer'], function () {
-        Route::get('/register', [CustomerController::class, 'registerPage'])->name('register-page');
-        Route::post('/register', [CustomerController::class, 'register'])->name('register');
+//     Route::group(['middleware' =>  'guest.customer'], function () {
+//         Route::get('/register', [CustomerController::class, 'registerPage'])->name('register-page');
+//         Route::post('/register', [CustomerController::class, 'register'])->name('register');
 
-        Route::get('/login', [CustomerController::class, 'loginPage'])->name('login-page');
-        Route::post('/login', [CustomerController::class, 'login'])->name('login');
-    });
+//         Route::get('/login', [CustomerController::class, 'loginPage'])->name('login-page');
+//         Route::post('/login', [CustomerController::class, 'login'])->name('login');
+//     });
 
-    Route::group(['middleware' =>  'auth.customer'], function () {
-        Route::get('/', [CustomerController::class, 'index'])->name('index');
-        Route::post('/logout', [CustomerController::class, 'logout'])->name('logout');
-    });
-});
+//     Route::group(['middleware' =>  'auth.customer'], function () {
+//         Route::get('/', [CustomerController::class, 'index'])->name('index');
+//         Route::post('/logout', [CustomerController::class, 'logout'])->name('logout');
+//     });
+// });
 
 
 

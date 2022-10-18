@@ -13,6 +13,17 @@ use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
+
+    /**
+     * Create the controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Post::class, 'post');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -51,8 +62,6 @@ class PostController extends Controller
     {
 
 
-        if (auth()->user()->role !== 'admin')
-            abort(404);
 
         $categories = Category::all();
         $activeMenu = ['post', 'create-post'];
@@ -69,15 +78,13 @@ class PostController extends Controller
     {
 
 
-        if (auth()->user()->role !== 'admin')
-            abort(404);
 
         // dd($request->all());
 
-        //image file uploade
+        //image file upload
         $thumbnail_file = $this->storeThumbnailFile();
 
-        $post =  auth()->user()->posts()->create(array_merge($request->all(), [
+        $post =  Auth::user()->posts()->create(array_merge($request->all(), [
             'thumbnail' => $thumbnail_file->hashName(),
         ]));
 
@@ -96,10 +103,6 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-
-
-        if (auth()->user()->role !== 'admin')
-            abort(404);
 
         $categories = Category::all();
 
@@ -127,8 +130,6 @@ class PostController extends Controller
 
 
 
-        if (auth()->user()->role !== 'admin')
-            abort(404);
 
         $merge_request_vars = [
             'user_id' => auth()->user()->id
@@ -165,8 +166,6 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
 
-        if (auth()->user()->role !== 'admin')
-            abort(404);
 
         $post->categories()->sync([]);
         $this->deleteThumbnailFile($post);

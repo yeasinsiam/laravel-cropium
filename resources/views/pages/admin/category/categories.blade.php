@@ -5,62 +5,65 @@
 @section('contents')
     <div class="content-wrapper">
         <div class="row">
-            <div class="col-md-5 col-sm-12   grid-margin stretch-card">
-                <div class="card">
-                    @if (session()->has('success-message'))
-                        <div class="alert alert-success">{{ session('success-message') }}</div>
-                    @endif
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <h3 class="card-title">
-                                    @if (isset($is_edit_page))
-                                        Edit Category
-                                    @else
-                                        Create Category
-                                    @endif
-                                </h3>
-                            </div>
-                            {{-- <div class="col text-right">Permalink: <a href="{{ route( 'blog-details',  $post->slug ) }}" target="_blank">{{ route( 'blog-details',  $post->slug ) }}</a></div> --}}
-                        </div>
-                        <hr>
-                        @if (isset($is_edit_page))
-                            <form class="forms-sample" method="POST"
-                                action="{{ route('admin.categories.update', $category) }}">
-                                @csrf
-                                @method('PUT')
-                                <div class="form-group">
-                                    <label for="post-title">Name</label>
-                                    <input type="text" class="form-control" id="post-title" placeholder="Category Name"
-                                        name="name" value="{{ $category->name }}">
-                                    @error('name')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <button type="submit" class="btn btn-success mr-2">Update</button>
-                                <a href="{{ route('admin.categories.index') }}" class="btn btn-light">Reset</a>
-                            </form>
-                        @else
-                            <form class="forms-sample" method="POST" action="{{ route('admin.categories.store') }}">
-                                @csrf
-                                <div class="form-group">
-                                    <label for="post-title">Name</label>
-                                    <input type="text" class="form-control" id="post-title" placeholder="Category Name"
-                                        name="name" value="{{ old('name') }}">
-                                    @error('name')
-                                        <div class="alert alert-danger">{{ $message }}</div>
-                                    @enderror
-                                </div>
-
-                                <button type="submit" class="btn btn-success mr-2">Create</button>
-                                <a href="{{ route('admin.categories.index') }}" class="btn btn-light">Reset</a>
-                            </form>
+            @can('Create And Modify Categories')
+                <div class="col-md-5 col-sm-12   grid-margin stretch-card">
+                    <div class="card">
+                        @if (session()->has('success-message'))
+                            <div class="alert alert-success">{{ session('success-message') }}</div>
                         @endif
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h3 class="card-title">
+                                        @if (isset($is_edit_page))
+                                            Edit Category
+                                        @else
+                                            Create Category
+                                        @endif
+                                    </h3>
+                                </div>
+                                {{-- <div class="col text-right">Permalink: <a href="{{ route( 'blog-details',  $post->slug ) }}" target="_blank">{{ route( 'blog-details',  $post->slug ) }}</a></div> --}}
+                            </div>
+                            <hr>
+                            @if (isset($is_edit_page))
+                                <form class="forms-sample" method="POST"
+                                    action="{{ route('admin.categories.update', $category) }}">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="form-group">
+                                        <label for="post-title">Name</label>
+                                        <input type="text" class="form-control" id="post-title" placeholder="Category Name"
+                                            name="name" value="{{ $category->name }}">
+                                        @error('name')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success mr-2">Update</button>
+                                    <a href="{{ route('admin.categories.index') }}" class="btn btn-light">Reset</a>
+                                </form>
+                            @else
+                                <form class="forms-sample" method="POST" action="{{ route('admin.categories.store') }}">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="post-title">Name</label>
+                                        <input type="text" class="form-control" id="post-title" placeholder="Category Name"
+                                            name="name" value="{{ old('name') }}">
+                                        @error('name')
+                                            <div class="alert alert-danger">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success mr-2">Create</button>
+                                    <a href="{{ route('admin.categories.index') }}" class="btn btn-light">Reset</a>
+                                </form>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-7 grid-margin stretch-card">
+            @endcan
+
+            <div class="@can('View Categories') col-lg-7  @else col-lg-12 @endcan grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -104,18 +107,22 @@
                                             <td> {{ $category->slug }} </td>
                                             <td> {{ date('M d, Y', strtotime($category->updated_at)) }} </td>
                                             <td>
-                                                <a href="{{ route('admin.categories.edit', $category) }}">
-                                                    <i class="fa fa-edit" style="font-size:1.4em"></i>
-                                                </a>
-                                                <form action="{{ route('admin.categories.destroy', $category) }}"
-                                                    onclick="return confirm('Sure delete this category?')"
-                                                    class="d-inline m-0 ml-2" method="POST">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit"
-                                                        class="bg-transparent border-0 outline-0 m-0 text-danger"><i
-                                                            class="fa fa-trash" style="font-size:1.4em"></i></button>
-                                                </form>
+                                                @can('update', $category)
+                                                    <a href="{{ route('admin.categories.edit', $category) }}">
+                                                        <i class="fa fa-edit" style="font-size:1.4em"></i>
+                                                    </a>
+                                                @endcan
+                                                @can('delete', $category)
+                                                    <form action="{{ route('admin.categories.destroy', $category) }}"
+                                                        onclick="return confirm('Sure delete this category?')"
+                                                        class="d-inline m-0 ml-2" method="POST">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="bg-transparent border-0 outline-0 m-0 text-danger"><i
+                                                                class="fa fa-trash" style="font-size:1.4em"></i></button>
+                                                    </form>
+                                                @endcan
                                             </td>
                                         </tr>
                                     @endforeach

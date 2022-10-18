@@ -4,76 +4,79 @@
 <?php $__env->startSection('contents'); ?>
     <div class="content-wrapper">
         <div class="row">
-            <div class="col-md-5 col-sm-12   grid-margin stretch-card">
-                <div class="card">
-                    <?php if(session()->has('success-message')): ?>
-                        <div class="alert alert-success"><?php echo e(session('success-message')); ?></div>
-                    <?php endif; ?>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <h3 class="card-title">
-                                    <?php if(isset($is_edit_page)): ?>
-                                        Edit Category
-                                    <?php else: ?>
-                                        Create Category
-                                    <?php endif; ?>
-                                </h3>
-                            </div>
-                            
-                        </div>
-                        <hr>
-                        <?php if(isset($is_edit_page)): ?>
-                            <form class="forms-sample" method="POST"
-                                action="<?php echo e(route('admin.categories.update', $category)); ?>">
-                                <?php echo csrf_field(); ?>
-                                <?php echo method_field('PUT'); ?>
-                                <div class="form-group">
-                                    <label for="post-title">Name</label>
-                                    <input type="text" class="form-control" id="post-title" placeholder="Category Name"
-                                        name="name" value="<?php echo e($category->name); ?>">
-                                    <?php $__errorArgs = ['name'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                        <div class="alert alert-danger"><?php echo e($message); ?></div>
-                                    <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                </div>
-
-                                <button type="submit" class="btn btn-success mr-2">Update</button>
-                                <a href="<?php echo e(route('admin.categories.index')); ?>" class="btn btn-light">Reset</a>
-                            </form>
-                        <?php else: ?>
-                            <form class="forms-sample" method="POST" action="<?php echo e(route('admin.categories.store')); ?>">
-                                <?php echo csrf_field(); ?>
-                                <div class="form-group">
-                                    <label for="post-title">Name</label>
-                                    <input type="text" class="form-control" id="post-title" placeholder="Category Name"
-                                        name="name" value="<?php echo e(old('name')); ?>">
-                                    <?php $__errorArgs = ['name'];
-$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
-if ($__bag->has($__errorArgs[0])) :
-if (isset($message)) { $__messageOriginal = $message; }
-$message = $__bag->first($__errorArgs[0]); ?>
-                                        <div class="alert alert-danger"><?php echo e($message); ?></div>
-                                    <?php unset($message);
-if (isset($__messageOriginal)) { $message = $__messageOriginal; }
-endif;
-unset($__errorArgs, $__bag); ?>
-                                </div>
-
-                                <button type="submit" class="btn btn-success mr-2">Create</button>
-                                <a href="<?php echo e(route('admin.categories.index')); ?>" class="btn btn-light">Reset</a>
-                            </form>
+            <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('Create And Modify Categories')): ?>
+                <div class="col-md-5 col-sm-12   grid-margin stretch-card">
+                    <div class="card">
+                        <?php if(session()->has('success-message')): ?>
+                            <div class="alert alert-success"><?php echo e(session('success-message')); ?></div>
                         <?php endif; ?>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <h3 class="card-title">
+                                        <?php if(isset($is_edit_page)): ?>
+                                            Edit Category
+                                        <?php else: ?>
+                                            Create Category
+                                        <?php endif; ?>
+                                    </h3>
+                                </div>
+                                
+                            </div>
+                            <hr>
+                            <?php if(isset($is_edit_page)): ?>
+                                <form class="forms-sample" method="POST"
+                                    action="<?php echo e(route('admin.categories.update', $category)); ?>">
+                                    <?php echo csrf_field(); ?>
+                                    <?php echo method_field('PUT'); ?>
+                                    <div class="form-group">
+                                        <label for="post-title">Name</label>
+                                        <input type="text" class="form-control" id="post-title" placeholder="Category Name"
+                                            name="name" value="<?php echo e($category->name); ?>">
+                                        <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <div class="alert alert-danger"><?php echo e($message); ?></div>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success mr-2">Update</button>
+                                    <a href="<?php echo e(route('admin.categories.index')); ?>" class="btn btn-light">Reset</a>
+                                </form>
+                            <?php else: ?>
+                                <form class="forms-sample" method="POST" action="<?php echo e(route('admin.categories.store')); ?>">
+                                    <?php echo csrf_field(); ?>
+                                    <div class="form-group">
+                                        <label for="post-title">Name</label>
+                                        <input type="text" class="form-control" id="post-title" placeholder="Category Name"
+                                            name="name" value="<?php echo e(old('name')); ?>">
+                                        <?php $__errorArgs = ['name'];
+$__bag = $errors->getBag($__errorArgs[1] ?? 'default');
+if ($__bag->has($__errorArgs[0])) :
+if (isset($message)) { $__messageOriginal = $message; }
+$message = $__bag->first($__errorArgs[0]); ?>
+                                            <div class="alert alert-danger"><?php echo e($message); ?></div>
+                                        <?php unset($message);
+if (isset($__messageOriginal)) { $message = $__messageOriginal; }
+endif;
+unset($__errorArgs, $__bag); ?>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-success mr-2">Create</button>
+                                    <a href="<?php echo e(route('admin.categories.index')); ?>" class="btn btn-light">Reset</a>
+                                </form>
+                            <?php endif; ?>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-7 grid-margin stretch-card">
+            <?php endif; ?>
+
+            <div class="<?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('View Categories')): ?> col-lg-7  <?php else: ?> col-lg-12 <?php endif; ?> grid-margin stretch-card">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
@@ -118,18 +121,22 @@ unset($__errorArgs, $__bag); ?>
                                             <td> <?php echo e($category->slug); ?> </td>
                                             <td> <?php echo e(date('M d, Y', strtotime($category->updated_at))); ?> </td>
                                             <td>
-                                                <a href="<?php echo e(route('admin.categories.edit', $category)); ?>">
-                                                    <i class="fa fa-edit" style="font-size:1.4em"></i>
-                                                </a>
-                                                <form action="<?php echo e(route('admin.categories.destroy', $category)); ?>"
-                                                    onclick="return confirm('Sure delete this category?')"
-                                                    class="d-inline m-0 ml-2" method="POST">
-                                                    <?php echo csrf_field(); ?>
-                                                    <?php echo method_field('DELETE'); ?>
-                                                    <button type="submit"
-                                                        class="bg-transparent border-0 outline-0 m-0 text-danger"><i
-                                                            class="fa fa-trash" style="font-size:1.4em"></i></button>
-                                                </form>
+                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('update', $category)): ?>
+                                                    <a href="<?php echo e(route('admin.categories.edit', $category)); ?>">
+                                                        <i class="fa fa-edit" style="font-size:1.4em"></i>
+                                                    </a>
+                                                <?php endif; ?>
+                                                <?php if (app(\Illuminate\Contracts\Auth\Access\Gate::class)->check('delete', $category)): ?>
+                                                    <form action="<?php echo e(route('admin.categories.destroy', $category)); ?>"
+                                                        onclick="return confirm('Sure delete this category?')"
+                                                        class="d-inline m-0 ml-2" method="POST">
+                                                        <?php echo csrf_field(); ?>
+                                                        <?php echo method_field('DELETE'); ?>
+                                                        <button type="submit"
+                                                            class="bg-transparent border-0 outline-0 m-0 text-danger"><i
+                                                                class="fa fa-trash" style="font-size:1.4em"></i></button>
+                                                    </form>
+                                                <?php endif; ?>
                                             </td>
                                         </tr>
                                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>

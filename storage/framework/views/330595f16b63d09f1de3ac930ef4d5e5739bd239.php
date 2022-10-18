@@ -83,6 +83,9 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
+
+
+
                             <div class="form-group">
                                 <label for="user-password">Password</label>
                                 <input type="password" class="form-control" id="user-password" placeholder="Password"
@@ -114,6 +117,39 @@ if (isset($__messageOriginal)) { $message = $__messageOriginal; }
 endif;
 unset($__errorArgs, $__bag); ?>
                             </div>
+                            <hr>
+
+                            
+                            <div class="form-group">
+                                <label for="user-role">Select User Role</label>
+                                <select class="form-control form-control-lg" id="user-role" name="user_role">
+                                    <option value="">No Role</option>
+                                    <?php $__currentLoopData = $roles; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $role): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                        <option <?php if($user->roles()->find($role->id)): echo 'selected'; endif; ?> value=<?php echo e($role->name); ?>><?php echo e($role->name); ?>
+
+                                        </option>
+                                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                                </select>
+                            </div>
+
+
+                            
+                            <div class="form-group">
+                                <label for="user-permissions">Select User Permissions</label>
+                                <?php $__currentLoopData = $permissions; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $permission): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                                    <div class="form-check form-check-flat">
+                                        <label class="form-check-label">
+                                            <input name="user_permissions[]" type="checkbox" class="form-check-input"
+                                                value="<?php echo e($permission->name); ?>" <?php if($user->permissions()->find($permission->id)): echo 'checked'; endif; ?>>
+                                            <?php echo e($permission->name); ?> <i class="input-helper"></i></label>
+                                    </div>
+                                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+
+
+                            </div>
+
+
+
 
                             <button type="submit" class="btn btn-success mr-2">Update</button>
                             <a href="<?php echo e(route('admin.users.edit', $user)); ?>" class="btn btn-light">Reset</a>

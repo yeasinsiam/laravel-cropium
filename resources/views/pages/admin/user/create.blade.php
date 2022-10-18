@@ -73,6 +73,34 @@
                                 @enderror
                             </div>
 
+                            <hr>
+
+                            {{-- User Roles --}}
+                            <div class="form-group">
+                                <label for="user-role">Select User Role</label>
+                                <select class="form-control form-control-lg" id="user-role" name="user_role">
+                                    <option value="">No Role</option>
+                                    @foreach ($roles as $role)
+                                        <option value={{ $role->name }}>{{ $role->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+
+                            {{-- User Permissions --}}
+                            <div class="form-group">
+                                <label for="user-permissions">Select User Permissions</label>
+                                @foreach ($permissions as $permission)
+                                    <div class="form-check form-check-flat">
+                                        <label class="form-check-label">
+                                            <input name="user_permissions[]" type="checkbox" class="form-check-input"
+                                                value="{{ $permission->name }}">
+                                            {{ $permission->name }} <i class="input-helper"></i></label>
+                                    </div>
+                                @endforeach
+                            </div>
+
                             <button type="submit" class="btn btn-success mr-2">Create</button>
                             <a href="{{ route('admin.users.create') }}" class="btn btn-light">Reset</a>
                         </form>
