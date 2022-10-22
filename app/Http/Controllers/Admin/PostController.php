@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Http\Requests\StorePostRequest;
 use App\Http\Requests\UpdatePostRequest;
 use App\Models\Category;
+use App\Notifications\PostCreated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -89,6 +90,10 @@ class PostController extends Controller
         ]));
 
         $post->categories()->sync($request->post_category_ids);
+
+
+        // Send notification to user that post is created
+        $post->user->notify(new PostCreated($post));
 
         // return back()->with('success-message', 'Post Created Successfully !');
         return redirect()->route('admin.posts.edit', $post)->with('success-message', 'Post Created Successfully !');

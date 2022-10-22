@@ -12,6 +12,8 @@ use App\Http\Controllers\HomePageController;
 use App\Http\Controllers\LoginPageController;
 use App\Http\Controllers\RegisterPageController;
 use App\Http\Controllers\UserPageController;
+use App\Mail\WelcomeNotification;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -24,6 +26,40 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+
+
+
+
+
+
+
+Route::get('/welcome-mail', function () {
+
+
+
+
+    Mail::to('yeasin.rahman.siam@gmail.com')->send(new WelcomeNotification);
+
+
+    return 'Mail Send';
+});
+
+
+
+
+
+
+
+Route::get('/notifications', function () {
+    dd(auth()->user()->notifications);
+});
+
+
+
+
+
+
 
 
 
